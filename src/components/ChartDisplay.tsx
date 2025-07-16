@@ -77,7 +77,7 @@ const ChartDisplay: React.FC<ChartDisplayProps> = memo(({
         </div>
       </div>
       <div style={{ marginTop: '20px', textAlign: 'center' }}>
-        <button className="btn download-btn" onClick={downloadChart} aria-label="Download Chart" title="Download Chart">
+        <button className="btn btn-icon download-btn" onClick={downloadChart} aria-label="Download Chart" title="Download Chart">
           <FiDownload />
         </button>
       </div>

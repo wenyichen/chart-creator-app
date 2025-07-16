@@ -23,7 +23,7 @@ const TitleInput: React.FC<TitleInputProps> = ({ chartTitle, onTitleChange, onGe
         />
         <button
           type="button"
-          className="generate-title-btn"
+          className="btn btn-icon btn-purple generate-title-btn"
           onClick={onGenerateTitle}
           title="Generate random title"
         >

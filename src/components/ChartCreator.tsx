@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { FiDatabase, FiSettings, FiChevronDown, FiChevronRight, FiPlay, FiRefreshCw } from 'react-icons/fi';
+import { FiSettings, FiChevronDown, FiChevronRight, FiPlay, FiRefreshCw } from 'react-icons/fi';
 import ChartTypeSelector from './ChartTypeSelector';
 import TitleInput from './TitleInput';
 import ColorPaletteSelector from './ColorPaletteSelector';
@@ -56,7 +56,6 @@ const ChartCreator: React.FC<ChartCreatorProps> = memo(({
   } = useChartState({ onChartCreate, selectedPalette, generateRandomTitle });
 
   // Collapsible section state
-  const [dataSectionOpen, setDataSectionOpen] = useState(true);
   const [advancedSectionOpen, setAdvancedSectionOpen] = useState(false);
 
   return (
@@ -87,41 +86,21 @@ const ChartCreator: React.FC<ChartCreatorProps> = memo(({
         onRemoveCustomColor={removeCustomColor}
       />
 
-      {/* Collapsible Data Points Section */}
-      <div className="collapsible-section">
-        <button
-          type="button"
-          className="collapsible-header"
-          onClick={() => setDataSectionOpen(!dataSectionOpen)}
-          aria-expanded={dataSectionOpen}
-        >
-          <div className="header-content">
-            <FiDatabase size={20} />
-            <span>Data Points & Import</span>
-          </div>
-          {dataSectionOpen ? <FiChevronDown size={16} /> : <FiChevronRight size={16} />}
-        </button>
-        
-        {dataSectionOpen && (
-          <div className="collapsible-content">
-            <DataPointsInput 
-              dataPoints={dataPoints}
-              onDataPointChange={updateDataPoint}
-              onAddDataPoint={addDataPoint}
-              onRemoveDataPoint={removeDataPoint}
-              onClearAll={clearAllDataPoints}
-              chartType={chartType}
-              dataPointErrors={dataPointErrors}
-              generalError={generalError}
-            />
-            
-            <DataImport 
-              onImportData={importData}
-              chartType={chartType}
-            />
-          </div>
-        )}
-      </div>
+      <DataPointsInput 
+        dataPoints={dataPoints}
+        onDataPointChange={updateDataPoint}
+        onAddDataPoint={addDataPoint}
+        onRemoveDataPoint={removeDataPoint}
+        onClearAll={clearAllDataPoints}
+        chartType={chartType}
+        dataPointErrors={dataPointErrors}
+        generalError={generalError}
+      />
+      
+      <DataImport 
+        onImportData={importData}
+        chartType={chartType}
+      />
 
       {/* Collapsible Advanced Settings Section */}
       <div className="collapsible-section">
@@ -139,17 +118,15 @@ const ChartCreator: React.FC<ChartCreatorProps> = memo(({
         </button>
         
         {advancedSectionOpen && (
-          <div className="collapsible-content">
-                         <AdvancedSettings 
-               advancedSettings={advancedSettings}
-               onSettingChange={updateAdvancedSetting}
-             />
-          </div>
+          <AdvancedSettings 
+            advancedSettings={advancedSettings}
+            onSettingChange={updateAdvancedSetting}
+          />
         )}
       </div>
 
       <div className="chart-controls">
-        <button className="btn" onClick={handleCreateChart}>
+        <button className="btn btn-success" onClick={handleCreateChart}>
           <FiPlay />
           <span>Create Chart</span>
         </button>

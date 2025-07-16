@@ -75,6 +75,8 @@ const ColorPaletteSelector: React.FC<ColorPaletteSelectorProps> = ({
                       type="button"
                       className="remove-color-btn"
                       onClick={() => onRemoveCustomColor(index)}
+                      title="Remove this color"
+                      aria-label={`Remove color ${index + 1}`}
                     >
                       ×
                     </button>
@@ -83,10 +85,12 @@ const ColorPaletteSelector: React.FC<ColorPaletteSelectorProps> = ({
               ))}
               <button
                 type="button"
-                className="add-color-btn"
+                className="btn btn-icon btn-blue add-color-btn"
                 onClick={onAddCustomColor}
                 title="Add new color"
-              />
+              >
+                <span>+</span>
+              </button>
             </div>
           )}
         </div>
