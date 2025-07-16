@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/chart-creator-app/static/css/main.402ed8ee.css",
+    "main.js": "/chart-creator-app/static/js/main.c271922a.js",
+    "index.html": "/chart-creator-app/index.html",
+    "main.402ed8ee.css.map": "/chart-creator-app/static/css/main.402ed8ee.css.map",
+    "main.c271922a.js.map": "/chart-creator-app/static/js/main.c271922a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.402ed8ee.css",
+    "static/js/main.c271922a.js"
+  ]
+}
