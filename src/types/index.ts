@@ -1,6 +1,10 @@
+export type ChartType = 'bar' | 'pie' | 'line' | 'doughnut' | 'radar' | 'scatter';
+
 export interface DataPoint {
   label: string;
   value: string;
+  x?: string;
+  y?: string;
 }
 
 export interface ColorPalette {
@@ -28,10 +32,14 @@ export interface ChartData {
   labels: string[];
   datasets: Array<{
     label: string;
-    data: number[];
-    backgroundColor: string[];
-    borderColor: string[];
-    borderWidth: number;
+    data: number[] | { x: number; y: number }[];
+    backgroundColor?: string | string[];
+    borderColor?: string | string[];
+    borderWidth?: number;
     borderRadius?: number;
+    fill?: boolean;
+    tension?: number;
+    showLine?: boolean;
+    // Add any other Chart.js dataset options as needed
   }>;
 } 

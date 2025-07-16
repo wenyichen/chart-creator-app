@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
+import { FiX } from 'react-icons/fi';
 import { Chart, registerables } from 'chart.js';
-import { ChartData, AdvancedSettings } from '../types';
+import { ChartData, AdvancedSettings, ChartType } from '../types';
 
 Chart.register(...registerables);
 
@@ -8,7 +9,7 @@ interface FullscreenModalProps {
   isOpen: boolean;
   onClose: () => void;
   chartData: ChartData | null;
-  chartType: 'bar' | 'pie';
+  chartType: ChartType;
   chartTitle: string;
   advancedSettings: AdvancedSettings | null;
 }
@@ -187,7 +188,7 @@ const FullscreenModal: React.FC<FullscreenModalProps> = ({
           onClick={onClose}
           aria-label="Close fullscreen view"
         >
-          ×
+          <FiX size={24} />
         </button>
         
         <div className="fullscreen-chart-container">

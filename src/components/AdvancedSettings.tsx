@@ -1,28 +1,17 @@
 import React from 'react';
 import { AdvancedSettings as AdvancedSettingsType } from '../types';
 
+type SettingValue = string | number | boolean;
+
 interface AdvancedSettingsProps {
   advancedSettings: AdvancedSettingsType;
-  onSettingChange: (key: keyof AdvancedSettingsType, value: any) => void;
+  onSettingChange: (key: keyof AdvancedSettingsType, value: SettingValue) => void;
 }
 
 const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({ advancedSettings, onSettingChange }) => {
-  const [showAdvancedSettings, setShowAdvancedSettings] = React.useState(false);
-
   return (
-    <div className="advanced-settings-section">
-      <button
-        type="button"
-        className="advanced-toggle-btn"
-        onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
-      >
-        <span>Advanced Settings</span>
-        <span className="toggle-icon">{showAdvancedSettings ? '−' : '+'}</span>
-      </button>
-      
-      {showAdvancedSettings && (
-        <div className="advanced-settings-content">
-          <div className="settings-grid">
+    <div className="advanced-settings-content">
+      <div className="settings-grid">
             {/* Chart Dimensions */}
             <div className="settings-group">
               <h4>Dimensions</h4>
@@ -172,8 +161,6 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({ advancedSettings, o
             </div>
           </div>
         </div>
-      )}
-    </div>
   );
 };
 

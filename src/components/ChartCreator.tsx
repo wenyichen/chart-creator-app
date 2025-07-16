@@ -1,142 +1,63 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ChartData, ColorPalette, AdvancedSettings, DataPoint } from '../types';
-import { validateChartData, convertToChartData, createDefaultAdvancedSettings, createDefaultCustomColors } from '../utils/chartUtils';
+import React, { memo, useState } from 'react';
+import { FiDatabase, FiSettings, FiChevronDown, FiChevronRight, FiPlay, FiRefreshCw } from 'react-icons/fi';
 import ChartTypeSelector from './ChartTypeSelector';
 import TitleInput from './TitleInput';
 import ColorPaletteSelector from './ColorPaletteSelector';
 import DataPointsInput from './DataPointsInput';
-import AdvancedSettingsComponent from './AdvancedSettings';
-import ChartControls from './ChartControls';
+import DataImport from './DataImport';
+import AdvancedSettings from './AdvancedSettings';
+import { ChartData, ColorPalette, AdvancedSettings as AdvancedSettingsType, ChartType } from '../types';
+import { useChartState } from '../hooks/useChartState';
 
 interface ChartCreatorProps {
-  onChartCreate: (data: ChartData, type: 'bar' | 'pie', title: string, palette: ColorPalette, advancedSettings: AdvancedSettings) => void;
+  onChartCreate: (data: ChartData, type: ChartType, title: string, palette: ColorPalette, settings: AdvancedSettingsType) => void;
   selectedPalette: ColorPalette;
   colorPalettes: ColorPalette[];
   generateRandomTitle: () => string;
 }
 
-const ChartCreator: React.FC<ChartCreatorProps> = ({ 
+const ChartCreator: React.FC<ChartCreatorProps> = memo(({ 
   onChartCreate, 
   selectedPalette, 
   colorPalettes, 
   generateRandomTitle 
 }) => {
-  const [chartType, setChartType] = useState<'bar' | 'pie'>('bar');
-  const [chartTitle, setChartTitle] = useState('');
-  const [dataPoints, setDataPoints] = useState<DataPoint[]>([
-    { label: 'Dragon Wings', value: '42' },
-    { label: 'Magic Potions', value: '67' },
-    { label: 'Stardust', value: '89' },
-    { label: 'Rainbow Dreams', value: '34' },
-    { label: 'Moonbeams', value: '56' }
-  ]);
-  const [currentPalette, setCurrentPalette] = useState<ColorPalette>(selectedPalette);
-  const [customColors, setCustomColors] = useState<string[]>(createDefaultCustomColors());
-  const [useCustomColors, setUseCustomColors] = useState(false);
-  const [advancedSettings, setAdvancedSettings] = useState<AdvancedSettings>(createDefaultAdvancedSettings());
-  
-  // Track if initial chart has been created
-  const hasInitialized = useRef(false);
+  const {
+    // State
+    chartType,
+    chartTitle,
+    dataPoints,
+    currentPalette,
+    customColors,
+    useCustomColors,
+    advancedSettings,
+    // Field-level errors
+    titleError,
+    dataPointErrors,
+    generalError,
+    // Setters
+    setChartType,
+    setChartTitle,
+    setUseCustomColors,
+    // Actions
+    addDataPoint,
+    removeDataPoint,
+    updateDataPoint,
+    handlePaletteChange,
+    handleCustomColorChange,
+    addCustomColor,
+    removeCustomColor,
+    handleGenerateTitle,
+    updateAdvancedSetting,
+    handleCreateChart,
+    handleClear,
+    clearAllDataPoints,
+    importData
+  } = useChartState({ onChartCreate, selectedPalette, generateRandomTitle });
 
-  // Set a random title and generate initial chart on component mount
-  useEffect(() => {
-    if (hasInitialized.current) return; // Prevent multiple runs
-    
-    const title = generateRandomTitle();
-    setChartTitle(title);
-    
-    // Generate chart after title is set
-    if (dataPoints.length > 0 && dataPoints[0].label && dataPoints[0].value) {
-      // Small delay to ensure all state is properly initialized
-      const timer = setTimeout(() => {
-        // Create chart data with the generated title
-        const validation = validateChartData(dataPoints, title);
-        if (validation.isValid) {
-          const colors = useCustomColors ? customColors : currentPalette.colors;
-          const chartData = convertToChartData(dataPoints, title, colors, advancedSettings);
-          onChartCreate(chartData, chartType, title, currentPalette, advancedSettings);
-          hasInitialized.current = true;
-        }
-      }, 100);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [dataPoints, chartType, currentPalette, customColors, useCustomColors, advancedSettings, generateRandomTitle, onChartCreate]);
-
-  const addDataPoint = () => {
-    setDataPoints([...dataPoints, { label: '', value: '' }]);
-  };
-
-  const removeDataPoint = (index: number) => {
-    if (dataPoints.length > 1) {
-      const newDataPoints = dataPoints.filter((_, i) => i !== index);
-      setDataPoints(newDataPoints);
-    }
-  };
-
-  const updateDataPoint = (index: number, field: keyof DataPoint, value: string) => {
-    const newDataPoints = [...dataPoints];
-    newDataPoints[index][field] = value;
-    setDataPoints(newDataPoints);
-  };
-
-  const handlePaletteChange = (paletteId: string) => {
-    const palette = colorPalettes.find(p => p.id === paletteId);
-    if (palette) {
-      setCurrentPalette(palette);
-      setUseCustomColors(false);
-    }
-  };
-
-  const handleCustomColorChange = (index: number, color: string) => {
-    const newColors = [...customColors];
-    newColors[index] = color;
-    setCustomColors(newColors);
-  };
-
-  const addCustomColor = () => {
-    setCustomColors([...customColors, '#000000']);
-  };
-
-  const removeCustomColor = (index: number) => {
-    if (customColors.length > 1) {
-      const newColors = customColors.filter((_, i) => i !== index);
-      setCustomColors(newColors);
-    }
-  };
-
-  const handleGenerateTitle = () => {
-    setChartTitle(generateRandomTitle());
-  };
-
-  const updateAdvancedSetting = (key: keyof AdvancedSettings, value: any) => {
-    setAdvancedSettings(prev => ({
-      ...prev,
-      [key]: value
-    }));
-  };
-
-  const handleCreateChart = () => {
-    // Validate data
-    const validation = validateChartData(dataPoints, chartTitle);
-    if (!validation.isValid) {
-      alert(validation.error);
-      return;
-    }
-
-    // Use custom colors or selected palette
-    const colors = useCustomColors ? customColors : currentPalette.colors;
-
-    // Convert data for Chart.js
-    const chartData = convertToChartData(dataPoints, chartTitle, colors, advancedSettings);
-
-    onChartCreate(chartData, chartType, chartTitle, currentPalette, advancedSettings);
-  };
-
-  const handleClear = () => {
-    setChartTitle(generateRandomTitle());
-    setDataPoints([{ label: '', value: '' }]);
-  };
+  // Collapsible section state
+  const [dataSectionOpen, setDataSectionOpen] = useState(true);
+  const [advancedSectionOpen, setAdvancedSectionOpen] = useState(false);
 
   return (
     <div className="card">
@@ -146,43 +67,101 @@ const ChartCreator: React.FC<ChartCreatorProps> = ({
         chartType={chartType}
         onChartTypeChange={setChartType}
       />
-
+      
       <TitleInput 
         chartTitle={chartTitle}
         onTitleChange={setChartTitle}
         onGenerateTitle={handleGenerateTitle}
+        error={titleError}
       />
-
+      
       <ColorPaletteSelector 
         colorPalettes={colorPalettes}
         currentPalette={currentPalette}
         useCustomColors={useCustomColors}
         customColors={customColors}
-        onPaletteChange={handlePaletteChange}
+        onPaletteChange={(paletteId) => handlePaletteChange(paletteId, colorPalettes)}
         onUseCustomColorsChange={setUseCustomColors}
         onCustomColorChange={handleCustomColorChange}
         onAddCustomColor={addCustomColor}
         onRemoveCustomColor={removeCustomColor}
       />
 
-      <DataPointsInput 
-        dataPoints={dataPoints}
-        onDataPointChange={updateDataPoint}
-        onAddDataPoint={addDataPoint}
-        onRemoveDataPoint={removeDataPoint}
-      />
+      {/* Collapsible Data Points Section */}
+      <div className="collapsible-section">
+        <button
+          type="button"
+          className="collapsible-header"
+          onClick={() => setDataSectionOpen(!dataSectionOpen)}
+          aria-expanded={dataSectionOpen}
+        >
+          <div className="header-content">
+            <FiDatabase size={20} />
+            <span>Data Points & Import</span>
+          </div>
+          {dataSectionOpen ? <FiChevronDown size={16} /> : <FiChevronRight size={16} />}
+        </button>
+        
+        {dataSectionOpen && (
+          <div className="collapsible-content">
+            <DataPointsInput 
+              dataPoints={dataPoints}
+              onDataPointChange={updateDataPoint}
+              onAddDataPoint={addDataPoint}
+              onRemoveDataPoint={removeDataPoint}
+              onClearAll={clearAllDataPoints}
+              chartType={chartType}
+              dataPointErrors={dataPointErrors}
+              generalError={generalError}
+            />
+            
+            <DataImport 
+              onImportData={importData}
+              chartType={chartType}
+            />
+          </div>
+        )}
+      </div>
 
-      <AdvancedSettingsComponent 
-        advancedSettings={advancedSettings}
-        onSettingChange={updateAdvancedSetting}
-      />
+      {/* Collapsible Advanced Settings Section */}
+      <div className="collapsible-section">
+        <button
+          type="button"
+          className="collapsible-header"
+          onClick={() => setAdvancedSectionOpen(!advancedSectionOpen)}
+          aria-expanded={advancedSectionOpen}
+        >
+          <div className="header-content">
+            <FiSettings size={20} />
+            <span>Advanced Settings</span>
+          </div>
+          {advancedSectionOpen ? <FiChevronDown size={16} /> : <FiChevronRight size={16} />}
+        </button>
+        
+        {advancedSectionOpen && (
+          <div className="collapsible-content">
+                         <AdvancedSettings 
+               advancedSettings={advancedSettings}
+               onSettingChange={updateAdvancedSetting}
+             />
+          </div>
+        )}
+      </div>
 
-      <ChartControls 
-        onCreateChart={handleCreateChart}
-        onClear={handleClear}
-      />
+      <div className="chart-controls">
+        <button className="btn" onClick={handleCreateChart}>
+          <FiPlay />
+          <span>Create Chart</span>
+        </button>
+        <button className="btn btn-secondary" onClick={handleClear}>
+          <FiRefreshCw />
+          <span>Reset Chart</span>
+        </button>
+      </div>
     </div>
   );
-};
+});
+
+ChartCreator.displayName = 'ChartCreator';
 
 export default ChartCreator; 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { FiPlay, FiRefreshCw } from 'react-icons/fi';
 
 interface ChartControlsProps {
   onCreateChart: () => void;
@@ -12,13 +13,15 @@ const ChartControls: React.FC<ChartControlsProps> = ({ onCreateChart, onClear })
         className="btn" 
         onClick={onCreateChart}
       >
-        ✨ Create Chart
+        <FiPlay />
+        <span>Create Chart</span>
       </button>
       <button 
         className="btn btn-secondary" 
         onClick={onClear}
       >
-        Clear All
+        <FiRefreshCw />
+        <span>Reset Chart</span>
       </button>
     </div>
   );

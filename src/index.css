@@ -345,8 +345,7 @@ code {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-width: 48px;
+  width: 48px;
   height: 48px;
   border-radius: 12px;
   padding: 12px;
@@ -453,6 +452,10 @@ code {
   font-style: italic;
 }
 
+.data-input input:focus::placeholder {
+  color: #9CA3AF;
+}
+
 .remove-btn {
   background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
   color: white;
@@ -487,7 +490,6 @@ code {
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  gap: 8px;
   box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
   font-family: 'Source Serif Pro', serif;
   margin-top: 16px;
@@ -498,10 +500,104 @@ code {
   box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
 }
 
-.add-btn::before {
-  content: '+';
-  font-size: 18px;
-  font-weight: 600;
+/* Data controls styling */
+.data-controls {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  align-items: center;
+}
+
+.data-controls .add-btn {
+  flex: 0 0 auto;
+  margin-top: 0;
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  justify-content: center;
+}
+
+.data-controls .btn-secondary {
+  flex: 0 0 auto;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Data import styling */
+.import-section {
+  background: rgba(249, 250, 251, 0.8);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #E5E7EB;
+  transition: all 0.3s ease;
+}
+
+.import-section:hover {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: #D1D5DB;
+}
+
+.import-info {
+  margin-bottom: 16px;
+}
+
+.import-description {
+  color: #6B7280;
+  font-size: 14px;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.import-example {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid #E5E7EB;
+}
+
+.import-example strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #374151;
+  font-size: 13px;
+}
+
+.import-example pre {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-size: 12px;
+  color: #1F2937;
+  margin: 0;
+  white-space: pre-wrap;
+  line-height: 1.4;
+}
+
+.import-controls {
+  display: flex;
+  justify-content: center;
+}
+
+.import-error {
+  margin-top: 12px;
+  padding: 12px;
+  background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+  border: 1px solid #FCA5A5;
+  border-radius: 8px;
+  color: #B91C1C;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.loading-spinner-small {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 8px;
 }
 
 /* Enhanced scrollbar */
@@ -1273,4 +1369,237 @@ code {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+} 
+
+/* Collapsible section styles */
+.collapsible-section {
+  margin-bottom: 24px;
+  background: rgba(249, 250, 251, 0.3);
+  border-radius: 12px;
+  border: 1px solid #E5E7EB;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.collapsible-section:hover {
+  background: rgba(255, 255, 255, 0.5);
+  border-color: #D1D5DB;
+}
+
+.collapsible-header {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  color: #1A1A1A;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: left;
+  padding: 16px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+  outline: none;
+  font-family: 'Source Serif Pro', serif;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+.collapsible-header:hover {
+  background: rgba(255, 255, 255, 0.95);
+  color: #374151;
+}
+
+.collapsible-header:focus {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 0 0 2px rgba(26, 26, 26, 0.1);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.collapsible-header svg:first-child {
+  color: #6B7280;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.section-icon {
+  color: #374151;
+  flex-shrink: 0;
+}
+
+.collapsible-section > div {
+  padding: 20px;
+}
+
+/* Icon and text alignment */
+.btn, .add-btn, .remove-btn {
+  display: flex !important;
+  align-items: center;
+}
+
+/* Gap only for buttons with text */
+.btn:not(.download-btn):not(.generate-title-btn) span,
+.remove-btn span {
+  margin-left: 8px;
+}
+
+.chart-controls .btn,
+.data-controls .btn-secondary {
+  gap: 8px;
+}
+
+.btn svg, .add-btn svg, .remove-btn svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.chart-controls .btn {
+  justify-content: center;
+}
+
+.data-controls .add-btn,
+.data-controls .btn-secondary {
+  justify-content: center;
+}
+
+/* Chart type label with icon */
+.form-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-type-icon {
+  width: 16px;
+  height: 16px;
+  color: #374151;
+}
+
+/* Generate title button icon */
+.generate-title-btn {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0 !important;
+}
+
+.generate-title-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+
+
+/* Scrollable data points list */
+.scrollable-data-points {
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 4px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 600px) {
+  .scrollable-data-points {
+    max-height: 200px;
+  }
+} 
+
+/* Field-level error styling */
+.field-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 8px 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 500;
+  animation: slideInError 0.3s ease-out;
+}
+
+.field-error svg {
+  flex-shrink: 0;
+  color: #dc2626;
+}
+
+/* This rule is now handled above in the new .data-point-error section */
+
+.general-error {
+  margin-bottom: 12px;
+  background: #fefbf2;
+  border-color: #fed7aa;
+  color: #ea580c;
+}
+
+.general-error svg {
+  color: #ea580c;
+}
+
+/* Input error states */
+.input-error {
+  border-color: #dc2626 !important;
+  background: #fef2f2 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+}
+
+.input-error:focus {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.2) !important;
+}
+
+/* Error animation */
+@keyframes slideInError {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Data input field grouping */
+.data-input-fields {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.data-input-fields input {
+  flex: 1;
+}
+
+.data-input-fields .remove-btn {
+  flex-shrink: 0;
+}
+
+/* Adjust spacing for data inputs with errors */
+.data-input {
+  margin-bottom: 8px;
+}
+
+.data-input:last-of-type {
+  margin-bottom: 16px;
+}
+
+/* Data point error styling - now displayed below inputs */
+.data-point-error {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  padding: 8px 12px;
+  animation: slideInError 0.2s ease-out;
 } 

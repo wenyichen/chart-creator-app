@@ -1,12 +1,14 @@
 import React from 'react';
+import { FiShuffle, FiAlertCircle } from 'react-icons/fi';
 
 interface TitleInputProps {
   chartTitle: string;
   onTitleChange: (title: string) => void;
   onGenerateTitle: () => void;
+  error?: string | null;
 }
 
-const TitleInput: React.FC<TitleInputProps> = ({ chartTitle, onTitleChange, onGenerateTitle }) => {
+const TitleInput: React.FC<TitleInputProps> = ({ chartTitle, onTitleChange, onGenerateTitle, error }) => {
   return (
     <div className="form-group">
       <label htmlFor="chartTitle">Chart Title</label>
@@ -17,6 +19,7 @@ const TitleInput: React.FC<TitleInputProps> = ({ chartTitle, onTitleChange, onGe
           value={chartTitle}
           onChange={(e) => onTitleChange(e.target.value)}
           placeholder="Enter chart title"
+          className={error ? 'input-error' : ''}
         />
         <button
           type="button"
@@ -24,9 +27,15 @@ const TitleInput: React.FC<TitleInputProps> = ({ chartTitle, onTitleChange, onGe
           onClick={onGenerateTitle}
           title="Generate random title"
         >
-          🎲
+          <FiShuffle />
         </button>
       </div>
+      {error && (
+        <div className="field-error" role="alert">
+          <FiAlertCircle size={14} />
+          <span>{error}</span>
+        </div>
+      )}
     </div>
   );
 };
