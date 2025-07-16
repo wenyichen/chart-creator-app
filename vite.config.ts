@@ -9,7 +9,7 @@ export default defineConfig({
     open: true
   },
   build: {
-    outDir: 'build',
+    outDir: 'dist',
     sourcemap: true
   },
   base: process.env.NODE_ENV === 'production' ? '/chart-creator-app/' : '/'

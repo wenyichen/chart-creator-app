@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ChartCreator from './components/ChartCreator';
 import ChartDisplay from './components/ChartDisplay';
 import FullscreenModal from './components/FullscreenModal';

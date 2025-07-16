@@ -118,7 +118,7 @@ export const validateChartData = (dataPoints: DataPoint[], chartTitle: string, c
       }
     });
     // Check for duplicate labels
-    labelCounts.forEach((indices, label) => {
+    labelCounts.forEach((indices) => {
       if (indices.length > 1) {
         indices.forEach(index => {
           errors.push({
