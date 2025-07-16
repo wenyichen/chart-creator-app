@@ -1,3 +1,5 @@
+# Random vibe code app testing models
+
 # Chart Creator App
 
 A sophisticated React TypeScript application for creating beautiful bar and pie charts with advanced customization options. Built with a clean, modular architecture and inspired by Apple's design aesthetic with a retro twist.
