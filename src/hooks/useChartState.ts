@@ -54,7 +54,7 @@ export const useChartState = ({ onChartCreate, selectedPalette, generateRandomTi
     const title = generateRandomTitle();
     setChartTitle(title);
     
-    if (dataPoints.length > 0 && ((dataPoints[0].label && dataPoints[0].value) || (dataPoints[0].x && dataPoints[0].y))) {
+    if (dataPoints.length > 0 && (((dataPoints[0].label && dataPoints[0].value) || (dataPoints[0].x && dataPoints[0].y)))) {
       const timer = setTimeout(() => {
         const validation = validateChartData(dataPoints, title, chartType);
         if (validation.isValid) {
